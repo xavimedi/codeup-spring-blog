@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <head th:replace="partials :: head" />
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Index</title>
 </head>
 <body>
+<nav th:replace="partials :: navbar" />
 
+<div th:each="post : ${posts}">
+    <a th:href="@{/posts/{id}(id=${post.id})}"><h1 th:text="${post.title}"></h1></a>
+    <p th:text="${post.body}"></p>
+</div>
+
+
+<div th:replace="partials :: footer" />
 </body>
 </html>

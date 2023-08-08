@@ -1,42 +1,48 @@
 package com.codeup.codeupspringblog.controllers;
 
-import org.springframework.stereotype.Controller;
+import com.codeup.codeupspringblog.models.Post;
+import com.codeup.codeupspringblog.repositories.PostRepository;
+import org.springframework.ui.Model;
+import com.codeup.codeupspringblog.repositories.AdRepository;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class PostController {
+public class PostController{
 
-	@GetMapping("/posts")
-	@ResponseBody
-	public String postIndex(){
-		StringBuilder posts = new StringBuilder();
+	private final PostRepository postRepository;
 
-		for(int i = 1; i < 100; i++){
-			posts.append("<br>post #" + i + " <a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab\">(read more)</a>");
-		}
-
-		return "These are my posts: " + posts;
+	public PostController(PostRepository postRepository) {
+		this.postRepository = postRepository;
 	}
 
-	@GetMapping("/posts/{id}")
-	@ResponseBody
-	public String post(@PathVariable int id){
-		return "This is post #" + id;
+	@GetMapping("/posts/index")
+	public String index(Model model){
+		model.addAttribute("posts", postRepository.findAll());
+		return "posts/index";
 	}
 
 	@GetMapping("/posts/create")
-	@ResponseBody
-	public String postCreate(){
-		return "Fill out the post information";
+	public String postsForm(){
+		return "posts/create";
 	}
 
 	@PostMapping("/posts/create")
-	@ResponseBody
-	public String postCreateSubmit(){
-		return "You posted a post!";
+	public String create(@RequestParam String title, @RequestParam String body, Model model){
+		Post newPost = new Post(title, body);
+		postRepository.save(newPost);
+		model.addAttribute("posts", postRepository.findAll());
+		return "posts/index";
 	}
+
+	@GetMapping("/posts/{id}")
+	public String postsHome(@PathVariable long id, Model model) {
+		Post post = postRepository.findById(id).orElse(null);
+		model.addAttribute("post", post);
+		return "posts/show";
+	}
+
 
 }
