@@ -18,7 +18,7 @@ public class PostController{
 		this.postRepository = postRepository;
 	}
 
-	@GetMapping("/posts/index")
+	@GetMapping("/posts")
 	public String index(Model model){
 		model.addAttribute("posts", postRepository.findAll());
 		return "posts/index";
@@ -33,8 +33,7 @@ public class PostController{
 	public String create(@RequestParam String title, @RequestParam String body, Model model){
 		Post newPost = new Post(title, body);
 		postRepository.save(newPost);
-		model.addAttribute("posts", postRepository.findAll());
-		return "posts/index";
+		return "redirect:/posts";
 	}
 
 	@GetMapping("/posts/{id}")
@@ -43,6 +42,4 @@ public class PostController{
 		model.addAttribute("post", post);
 		return "posts/show";
 	}
-
-
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <head th:replace="partials :: head" />
+    <meta charset="UTF-8">
+    <title>Create and ad</title>
+</head>
+<body>
+<nav th:replace="partials :: navbar" />
+  <fieldset>
+    <legend>Create an Ad</legend>
+    <form th:action="@{/ads/create}" th:method="post">
+      <label for="title">Title:</label>
+      <input type="text" name="title" id="title"><br>
+      <textarea name="description" id="description" cols="33" rows="10"></textarea><br>
+      <input type="submit" value="Create an ad">
+    </form>
+  </fieldset>
+<div th:replace="partials :: footer" />
+</body>
+</html>

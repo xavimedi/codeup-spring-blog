@@ -11,9 +11,11 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
 	// The following method is equivalent to the built in `getById` method, there's no need to create this example
 	@Query("from Ad a where a.id like ?1")
-	Ad getAdById(long id);
+	Ad findAdById(long id);
 
 	// The following method shows you how to use named parameters in a HQL custom query:
 	@Query("from Ad a where a.title like %:term%")
 	List<Ad> searchByTitleLike(@Param("term") String term);
+
+
 }

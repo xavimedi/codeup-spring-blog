@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head th:replace="partials :: head" />
+    <meta charset="UTF-8">
+    <title th:text="${ad.title}"></title>
+</head>
+<body>
+<nav th:replace="partials :: navbar" />
+    <p th:text="${ad.description}"></p>
+<div th:replace="partials :: footer" />
+</body>
+</html>
