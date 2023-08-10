@@ -6,11 +6,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class AdUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
 
 	private long id;
 
@@ -26,15 +25,26 @@ public class User {
 	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
 	private List<Ad> ads;
 
-	public User(){
+	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
+	private List<Post> posts;
+
+	public AdUser(){
 	}
 
 	public List<Ad> getAds() {
 		return ads;
 	}
 
+	public List<Post> getPosts(){
+		return posts;
+	}
+
 	public void setAds(List<Ad> ads) {
 		this.ads = ads;
+	}
+
+	public void setPosts(List<Post> posts){
+		this.posts = posts;
 	}
 
 	public long getId() {
