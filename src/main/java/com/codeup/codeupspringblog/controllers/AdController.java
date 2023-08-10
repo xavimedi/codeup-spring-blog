@@ -61,9 +61,11 @@ public class AdController {
 	}
 
 	@PostMapping("/ads/{id}/edit")
-	@Transactional
 	public String submitOneAd(@PathVariable long id, @ModelAttribute Ad ad) {
-		adDao.editAdById(ad.getTitle(), ad.getDescription(), id);
+		Ad adToUpdate = adDao.findAdById(id);
+		adToUpdate.setTitle(ad.getTitle());
+		adToUpdate.setDescription(ad.getDescription());
+		adDao.save(adToUpdate);
 		return "redirect:/ads/" + id;
 	}
 }

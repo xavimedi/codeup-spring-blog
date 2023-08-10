@@ -15,13 +15,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 	@Query("from Ad a where a.id like ?1")
 	Ad findAdById(long id);
 
-	@Modifying
-	@Transactional
-	@Query("UPDATE Ad a SET a.title = :title, a.description = :description WHERE a.id = :id")
-	void editAdById(@Param("title") String title,
-					  @Param("description") String description,
-					  @Param("id") long id);
-
 	// The following method shows you how to use named parameters in a HQL custom query:
 	@Query("from Ad a where a.title like %:term%")
 	List<Ad> searchByTitleLike(@Param("term") String term);

@@ -14,14 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query("from Post p where p.id like ?1")
 	Post findPostById(long id);
 
-	@Modifying
-	@Transactional
-	@Query("UPDATE Post p SET p.title = :title, p.body = :body WHERE p.id = :id")
-	void editPostById(@Param("title") String title,
-					  @Param("body") String body,
-					  @Param("id") long id);
-
-
 	@Query("from Post p where p.title like %:term%")
 	List<Post> searchByTitleLike(@Param("term") String term);
 

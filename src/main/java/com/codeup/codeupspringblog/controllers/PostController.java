@@ -63,9 +63,11 @@ public class PostController{
 	}
 
 	@PostMapping("/posts/{id}/edit")
-	@Transactional
 	public String submitOnePost(@PathVariable long id, @ModelAttribute Post post) {
-		postDao.editPostById(post.getTitle(), post.getBody(), id);
+		Post postToUpdate = postDao.findPostById(id);
+		postToUpdate.setTitle(post.getTitle());
+		postToUpdate.setBody(post.getBody());
+		postDao.save(postToUpdate);
 		return "redirect:/posts/" + id;
 	}
 }
