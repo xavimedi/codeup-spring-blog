@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <head th:replace="partials :: head" />
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Create a Post</title>
 </head>
 <body>
 <nav th:replace="partials :: navbar" />
-
-<form th:action="@{/posts/create}" method="post">
-    <label for="title">Title:</label><br>
-    <input type="text" id="title" name="title"><br>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <textarea class="form-control" id="description" name="body" rows="3"></textarea>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</form>
-
+<fieldset>
+    <legend>Create a Post</legend>
+        <form th:action="@{/posts/create}" th:method="post" th:object="${post}">
+            Title:
+            <input th:field="*{title}" />
+            <br />
+            Body:
+            <input th:field="*{body}" />
+            <br />
+            <input type="submit" />
+        </form>
+</fieldset>
 <div th:replace="partials :: footer" />
 </body>
 </html>

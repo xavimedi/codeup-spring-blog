@@ -1,7 +1,9 @@
 package com.codeup.codeupspringblog.repositories;
 
 import com.codeup.codeupspringblog.models.Ad;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -12,6 +14,13 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 	// The following method is equivalent to the built in `getById` method, there's no need to create this example
 	@Query("from Ad a where a.id like ?1")
 	Ad findAdById(long id);
+
+	@Modifying
+	@Transactional
+	@Query("UPDATE Ad a SET a.title = :title, a.description = :description WHERE a.id = :id")
+	void editAdById(@Param("title") String title,
+					  @Param("description") String description,
+					  @Param("id") long id);
 
 	// The following method shows you how to use named parameters in a HQL custom query:
 	@Query("from Ad a where a.title like %:term%")

@@ -1,45 +1,71 @@
 package com.codeup.codeupspringblog.controllers;
 
+import com.codeup.codeupspringblog.models.Ad;
 import com.codeup.codeupspringblog.models.Post;
+import com.codeup.codeupspringblog.models.PostUser;
 import com.codeup.codeupspringblog.repositories.PostRepository;
+import com.codeup.codeupspringblog.repositories.PostUserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.ui.Model;
-import com.codeup.codeupspringblog.repositories.AdRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.Transient;
+
 @Controller
 public class PostController{
 
-	private final PostRepository postRepository;
+	private final PostRepository postDao;
 
-	public PostController(PostRepository postRepository) {
-		this.postRepository = postRepository;
+	private final PostUserRepository userDao;
+
+	public PostController(PostRepository postDao, PostUserRepository userDao){
+		this.postDao = postDao;
+		this.userDao = userDao;
 	}
 
 	@GetMapping("/posts")
 	public String index(Model model){
-		model.addAttribute("posts", postRepository.findAll());
+		model.addAttribute("posts", postDao.findAll());
 		return "posts/index";
 	}
 
 	@GetMapping("/posts/create")
-	public String postsForm(){
+	public String showPostCreateForm(Model model) {
+		model.addAttribute("post", new Post());
 		return "posts/create";
 	}
 
 	@PostMapping("/posts/create")
-	public String create(@RequestParam String title, @RequestParam String body, Model model){
-		Post newPost = new Post(title, body);
-		postRepository.save(newPost);
+	public String CreatePost(
+			@RequestParam(name="title") String title,
+			@RequestParam(name="body") String body){
+		PostUser user = userDao.findUserById(1L);
+		Post post = new Post(title, body, user);
+		postDao.save(post);
 		return "redirect:/posts";
 	}
 
 	@GetMapping("/posts/{id}")
-	public String postsHome(@PathVariable long id, Model model) {
-		Post post = postRepository.findById(id).orElse(null);
+	public String postsView(@PathVariable long id, Model model) {
+		Post post = postDao.findPostById(id);
 		model.addAttribute("post", post);
 		return "posts/show";
+	}
+
+	@GetMapping("/posts/{id}/edit")
+	public String editOnePost(@PathVariable long id, Model model) {
+		Post post = postDao.findPostById(id);
+		model.addAttribute("post", post);
+		return "/posts/edit";
+	}
+
+	@PostMapping("/posts/{id}/edit")
+	@Transactional
+	public String submitOnePost(@PathVariable long id, @ModelAttribute Post post) {
+		postDao.editPostById(post.getTitle(), post.getBody(), id);
+		return "redirect:/posts/" + id;
 	}
 }

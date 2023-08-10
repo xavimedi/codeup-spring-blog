@@ -5,12 +5,10 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "aduser")
 public class AdUser {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
 	private long id;
 
 	@Column(nullable = false, unique = true)
@@ -22,29 +20,18 @@ public class AdUser {
 	@Column(nullable = false)
 	private String password;
 
-	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
-	private List<Ad> ads;
+	@OneToMany(mappedBy = "adUser", cascade = CascadeType.ALL)
+	private List<Ad> userAds;
 
-	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
-	private List<Post> posts;
-
-	public AdUser(){
+	public AdUser() {
 	}
 
-	public List<Ad> getAds() {
-		return ads;
+	public List<Ad> getUserAds() {
+		return userAds;
 	}
 
-	public List<Post> getPosts(){
-		return posts;
-	}
-
-	public void setAds(List<Ad> ads) {
-		this.ads = ads;
-	}
-
-	public void setPosts(List<Post> posts){
-		this.posts = posts;
+	public void setUserAds(List<Ad> userAds) {
+		this.userAds = userAds;
 	}
 
 	public long getId() {

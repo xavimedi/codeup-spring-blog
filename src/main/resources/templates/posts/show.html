@@ -7,7 +7,9 @@
 </head>
 <body>
 <nav th:replace="partials :: navbar" />
+    <p th:text="${post.title}"></p>
     <p th:text="${post.body}"></p>
+    <p>Posted by: <span th:text="${post.postUser.email}"></span></p>
 <div th:replace="partials :: footer" />
 </body>
 </html>
