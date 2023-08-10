@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <head th:replace="partials :: head" />
-  <meta charset="UTF-8">
-  <title>Index</title>
+    <head th:replace="partials :: head"/>
+    <meta charset="UTF-8">
+    <title>Index</title>
 </head>
 <body>
-<nav th:replace="partials :: navbar" />
+<nav th:replace="partials :: navbar"/>
 
 <div th:each="ads : ${ads}">
-  <a th:href="@{/ads/{id}(id=${ads.id})}"><h1 th:text="${ads.title}"></h1></a>
-  <p th:text="${ads.description}"></p>
+    <a th:href="@{/ads/{id}(id=${ads.id})}"><h1 th:text="${ads.title}"></h1></a>
+    <p th:text="${ads.description}"></p>
 </div>
 
 
-<div th:replace="partials :: footer" />
+<div th:replace="partials :: footer"/>
 </body>
 </html>

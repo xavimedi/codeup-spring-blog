@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <head th:replace="partials :: head" />
+    <head th:replace="partials :: head"/>
     <meta charset="UTF-8">
     <title th:text="${post.title}"></title>
 </head>
 <body>
-<nav th:replace="partials :: navbar" />
-    <p th:text="${post.title}"></p>
-    <p th:text="${post.body}"></p>
-    <p>Posted by: <span th:text="${post.postUser.email}"></span></p>
-<div th:replace="partials :: footer" />
+<nav th:replace="partials :: navbar"/>
+<p th:text="${post.title}"></p>
+<p th:text="${post.body}"></p>
+<p>Posted by: <span th:text="${post.postUser.email}"></span></p>
+<div th:replace="partials :: footer"/>
 </body>
 </html>

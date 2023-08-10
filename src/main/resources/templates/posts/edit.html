@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-  <head th:replace="partials :: head" />
-  <meta charset="UTF-8">
-  <title>Edit a Post</title>
+    <head th:replace="partials :: head"/>
+    <meta charset="UTF-8">
+    <title>Edit a Post</title>
 </head>
 <body>
-<nav th:replace="partials :: navbar" />
+<nav th:replace="partials :: navbar"/>
 <fieldset>
-  <legend>Edit a Post</legend>
-  <form th:action="@{/posts/{id}/edit(id=${post.id})}" th:method="post" th:object="${post}">
-  New Title:
-    <input th:field="*{title}" />
-    <br />
-    New Body:
-    <input th:field="*{body}" />
-    <br />
-    <input type="submit" />
-  </form>
+    <legend>Edit a Post</legend>
+    <form th:action="@{/posts/{id}/edit(id=${post.id})}" th:method="post" th:object="${post}">
+        New Title:
+        <input th:field="*{title}"/>
+        <br/>
+        New Body:
+        <input th:field="*{body}"/>
+        <br/>
+        <input type="submit"/>
+    </form>
 </fieldset>
-<div th:replace="partials :: footer" />
+<div th:replace="partials :: footer"/>
 </body>
 </html>
