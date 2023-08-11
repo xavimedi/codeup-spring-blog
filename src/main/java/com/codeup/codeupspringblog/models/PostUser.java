@@ -23,6 +23,13 @@ public class PostUser {
 	@OneToMany(mappedBy = "postUser", cascade = CascadeType.ALL)
 	private List<Post> userPosts;
 
+	public PostUser(PostUser copy) {
+		id = copy.id;
+		email = copy.email;
+		username = copy.username;
+		password = copy.password;
+	}
+
 	public PostUser() {
 	}
 

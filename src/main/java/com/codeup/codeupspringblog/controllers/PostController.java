@@ -1,12 +1,12 @@
 package com.codeup.codeupspringblog.controllers;
 
-import com.codeup.codeupspringblog.models.Ad;
 import com.codeup.codeupspringblog.models.Post;
 import com.codeup.codeupspringblog.models.PostUser;
 import com.codeup.codeupspringblog.repositories.PostRepository;
 import com.codeup.codeupspringblog.repositories.PostUserRepository;
 import com.codeup.codeupspringblog.services.EmailService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -63,6 +63,8 @@ public class PostController{
 
 	@GetMapping("/posts/{id}/edit")
 	public String editOnePost(@PathVariable long id, Model model) {
+		PostUser Principal = (PostUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 		Post post = postDao.findPostById(id);
 		model.addAttribute("post", post);
 		return "/posts/edit";

@@ -1,24 +1,24 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <head th:replace="partials :: head"/>
-    <meta charset="UTF-8">
-    <title>Create a Post</title>
-</head>
-<body>
-<nav th:replace="partials :: navbar"/>
-<fieldset>
-    <legend>Edit an Ad</legend>
-    <form th:action="@{/ads/{id}/edit(id=${ad.id})}" th:method="post" th:object="${ad}">
-        New Title:
-        <input th:field="*{title}"/>
-        <br/>
-        New Body:
-        <input th:field="*{description}"/>
-        <br/>
-        <input type="submit"/>
-    </form>
-</fieldset>
-<div th:replace="partials :: footer"/>
-</body>
-</html>
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head>-->
+<!--    <head th:replace="partials :: head"/>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Create a Post</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<nav th:replace="partials :: navbar"/>-->
+<!--<fieldset>-->
+<!--    <legend>Edit an Ad</legend>-->
+<!--    <form th:action="@{/ads/{id}/edit(id=${ad.id})}" th:method="post" th:object="${ad}">-->
+<!--        New Title:-->
+<!--        <input th:field="*{title}"/>-->
+<!--        <br/>-->
+<!--        New Body:-->
+<!--        <input th:field="*{description}"/>-->
+<!--        <br/>-->
+<!--        <input type="submit"/>-->
+<!--    </form>-->
+<!--</fieldset>-->
+<!--<div th:replace="partials :: footer"/>-->
+<!--</body>-->
+<!--</html>-->
