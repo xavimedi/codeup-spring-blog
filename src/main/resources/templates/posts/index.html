@@ -44,8 +44,7 @@
     <a th:href="@{/posts/{id}(id=${post.id})}"><h1 th:text="${post.title}" class="card-title"></h1></a>
     <p th:text="${post.body}" class="card-body"></p>
 </div>
-
-
 <div th:replace="partials :: footer"/>
+
 </body>
 </html>

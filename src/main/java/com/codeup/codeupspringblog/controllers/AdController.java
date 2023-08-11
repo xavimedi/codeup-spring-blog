@@ -5,6 +5,7 @@ import com.codeup.codeupspringblog.models.AdUser;
 import com.codeup.codeupspringblog.models.Post;
 import com.codeup.codeupspringblog.repositories.AdUserRepository;
 import com.codeup.codeupspringblog.repositories.AdRepository;
+import com.codeup.codeupspringblog.services.EmailService;
 import jakarta.transaction.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +16,16 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class AdController {
 
+	private EmailService emailService;
+
 	private final AdRepository adDao;
 
-	private final AdUserRepository userDao;
+	private final AdUserRepository adUserDao;
 
-	public AdController(AdRepository adDao, AdUserRepository userDao){
+	public AdController(AdRepository adDao, AdUserRepository adUserDao, EmailService emailService){
+		this.emailService = emailService;
 		this.adDao = adDao;
-		this.userDao = userDao;
+		this.adUserDao = adUserDao;
 	}
 
 	@GetMapping("/ads")
@@ -40,9 +44,12 @@ public class AdController {
 	public String CreateAd(
 			@RequestParam(name="title") String title,
 			@RequestParam(name="description") String description){
-		AdUser user = userDao.findUserById(1L);
+		AdUser user = adUserDao.findUserById(1L);
 		Ad ad = new Ad(title, description, user);
 		adDao.save(ad);
+
+		//send email to creator of ad
+		emailService.sendAnAdEmail(ad, "Here's your ad", "Ad body");
 		return "redirect:/ads";
 	}
 

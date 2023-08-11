@@ -9,6 +9,7 @@
 <nav th:replace="partials :: navbar"/>
 <p th:text="${ad.title}"></p>
 <p th:text="${ad.description}"></p>
+<a th:href="@{|/ads/${ad.id}/edit|}">Edit</a>
 <p>Ad posted by: <span th:text="${ad.adUser.email}"></span></p>
 <div th:replace="partials :: footer"/>
 </body>

@@ -9,6 +9,8 @@
 <nav th:replace="partials :: navbar"/>
 <p th:text="${post.title}"></p>
 <p th:text="${post.body}"></p>
+<a th:href="@{|/posts/${post.id}/edit|}">Edit</a>
+
 <p>Posted by: <span th:text="${post.postUser.email}"></span></p>
 <div th:replace="partials :: footer"/>
 </body>

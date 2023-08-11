@@ -5,6 +5,7 @@ import com.codeup.codeupspringblog.models.Post;
 import com.codeup.codeupspringblog.models.PostUser;
 import com.codeup.codeupspringblog.repositories.PostRepository;
 import com.codeup.codeupspringblog.repositories.PostUserRepository;
+import com.codeup.codeupspringblog.services.EmailService;
 import jakarta.transaction.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +18,16 @@ import java.beans.Transient;
 @Controller
 public class PostController{
 
+	private EmailService emailService;
+
 	private final PostRepository postDao;
 
-	private final PostUserRepository userDao;
+	private final PostUserRepository postUserDao;
 
-	public PostController(PostRepository postDao, PostUserRepository userDao){
+	public PostController(PostRepository postDao, PostUserRepository postUserDao, EmailService emailService){
+		this.emailService = emailService;
 		this.postDao = postDao;
-		this.userDao = userDao;
+		this.postUserDao = postUserDao;
 	}
 
 	@GetMapping("/posts")
@@ -42,9 +46,11 @@ public class PostController{
 	public String CreatePost(
 			@RequestParam(name="title") String title,
 			@RequestParam(name="body") String body){
-		PostUser user = userDao.findUserById(1L);
-		Post post = new Post(title, body, user);
+		PostUser postUser = postUserDao.findUserById(1L);
+		Post post = new Post(title, body, postUser);
 		postDao.save(post);
+
+		emailService.sendAPostEmail(post, "Here's your post", "Post body");
 		return "redirect:/posts";
 	}
 
