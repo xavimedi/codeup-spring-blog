@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostUserDetailsLoader implements UserDetailsService {
-	private final PostUserRepository users;
+	private final PostUserRepository postUsers;
 
-	public PostUserDetailsLoader(PostUserRepository users) {
-		this.users = users;
+	public PostUserDetailsLoader(PostUserRepository postUsers) {
+		this.postUsers = postUsers;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		PostUser postUser = users.findUserByUsername(username);
+		PostUser postUser = postUsers.findUserByUsername(username);
 		if (postUser == null) {
 			throw new UsernameNotFoundException("No user found for " + username);
 		}

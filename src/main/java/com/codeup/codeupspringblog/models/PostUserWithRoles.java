@@ -8,8 +8,8 @@ import java.util.Collection;
 
 public class PostUserWithRoles extends PostUser implements UserDetails {
 
-	public PostUserWithRoles(PostUser user) {
-		super(user);  // Call the copy constructor defined in User
+	public PostUserWithRoles(PostUser postUser) {
+		super(postUser);  // Call the copy constructor defined in User
 	}
 
 	@Override

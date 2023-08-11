@@ -2,10 +2,12 @@ package com.codeup.codeupspringblog.controllers;
 
 import com.codeup.codeupspringblog.models.Post;
 import com.codeup.codeupspringblog.models.PostUser;
+import com.codeup.codeupspringblog.models.PostUserWithRoles;
 import com.codeup.codeupspringblog.repositories.PostRepository;
 import com.codeup.codeupspringblog.repositories.PostUserRepository;
 import com.codeup.codeupspringblog.services.EmailService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +48,7 @@ public class PostController{
 	public String CreatePost(
 			@RequestParam(name="title") String title,
 			@RequestParam(name="body") String body){
-		PostUser postUser = postUserDao.findUserById(1L);
+		PostUser postUser = (PostUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Post post = new Post(title, body, postUser);
 		postDao.save(post);
 
@@ -63,19 +65,37 @@ public class PostController{
 
 	@GetMapping("/posts/{id}/edit")
 	public String editOnePost(@PathVariable long id, Model model) {
-		PostUser Principal = (PostUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
 		Post post = postDao.findPostById(id);
-		model.addAttribute("post", post);
-		return "/posts/edit";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		if (authentication.getPrincipal() instanceof PostUserWithRoles) {
+			PostUserWithRoles authenticatedUserWithRoles = (PostUserWithRoles) authentication.getPrincipal();
+			PostUser authenticatedUser = authenticatedUserWithRoles;
+
+			if (post.getPostUser().getId() == authenticatedUser.getId()) {
+				model.addAttribute("post", post);
+				return "posts/edit";
+			}else{
+				return "redirect:/post/" + id;
+			}
+		}
+
+		return "redirect:/posts/" + id;
 	}
 
 	@PostMapping("/posts/{id}/edit")
 	public String submitOnePost(@PathVariable long id, @ModelAttribute Post post) {
 		Post postToUpdate = postDao.findPostById(id);
-		postToUpdate.setTitle(post.getTitle());
-		postToUpdate.setBody(post.getBody());
-		postDao.save(postToUpdate);
+		PostUser authenticatedUser = (PostUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (postToUpdate.getPostUser().getId() == authenticatedUser.getId()){
+			postToUpdate.setTitle(post.getTitle());
+			postToUpdate.setBody(post.getBody());
+			postDao.save(postToUpdate);
+		}else{
+			System.out.println(postToUpdate.getPostUser());
+			System.out.println(authenticatedUser);
+		}
 		return "redirect:/posts/" + id;
 	}
 }

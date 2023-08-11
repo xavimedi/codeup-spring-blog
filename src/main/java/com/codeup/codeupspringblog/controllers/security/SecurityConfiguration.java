@@ -19,7 +19,7 @@ public class SecurityConfiguration {
 
 	private PostUserDetailsLoader postUsersLoader;
 
-	public SecurityConfiguration(PostUserDetailsLoader usersLoader) {
+	public SecurityConfiguration(PostUserDetailsLoader postUsersLoader) {
 		this.postUsersLoader = postUsersLoader;
 	}
 
@@ -48,7 +48,7 @@ public class SecurityConfiguration {
 				/* Login configuration */
 				.formLogin((login) -> login.loginPage("/login").defaultSuccessUrl("/posts"))
 				/* Logout configuration */
-				.logout((logout) -> logout.logoutSuccessUrl("/"))
+				.logout((logout) -> logout.logoutSuccessUrl("/login"))
 				.httpBasic(withDefaults());
 		return http.build();
 	}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <head th:replace="partials :: head"/>
     <meta charset="UTF-8">
@@ -9,11 +10,12 @@
 <nav th:replace="partials :: navbar"/>
 <p th:text="${post.title}"></p>
 <p th:text="${post.body}"></p>
-<div sec:authorize="isAuthenticated()">
-<a th:href="@{|/posts/${post.id}/edit|}">Edit</a>
+
+<div th:if="${post.postUser.username == #authentication.principal.username}">
+    <a th:href="@{|/posts/${post.id}/edit|}">Edit</a>
 </div>
 
-<p>Posted by: <span th:text="${post.postUser.email}"></span></p>
+<p>Posted by: <span th:text="${post.postUser.username}"></span></p>
 <div th:replace="partials :: footer"/>
 </body>
 </html>
