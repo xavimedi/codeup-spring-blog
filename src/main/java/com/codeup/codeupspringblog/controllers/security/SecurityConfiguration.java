@@ -1,6 +1,6 @@
 package com.codeup.codeupspringblog.controllers.security;
 
-import com.codeup.codeupspringblog.services.PostUserDetailsLoader;
+import com.codeup.codeupspringblog.services.AdUserDetailsLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +17,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-	private PostUserDetailsLoader postUsersLoader;
+	private AdUserDetailsLoader adUsersLoader;
 
-	public SecurityConfiguration(PostUserDetailsLoader postUsersLoader) {
-		this.postUsersLoader = postUsersLoader;
+	public SecurityConfiguration(AdUserDetailsLoader adUsersLoader) {
+		this.adUsersLoader = adUsersLoader;
 	}
 
 	@Bean
@@ -38,15 +38,15 @@ public class SecurityConfiguration {
 		http.authorizeHttpRequests((requests) -> requests
 						/* Pages that require authentication
 						 * only authenticated users can create and edit ads */
-						.requestMatchers("/posts/create", "/posts/*/edit").authenticated()
+						.requestMatchers("/posts/create", "/posts/*/edit", "/ads/create", "/ads/*/edit").authenticated()
 						/* Pages that do not require authentication
 						 * anyone can visit the home page, register, login, and view ads */
-						.requestMatchers("/", "/posts", "/posts/*", "/sign-up", "/login").permitAll()
+						.requestMatchers("/", "/posts", "/posts/*", "/ads", "/ads/*", "/sign-up", "/login").permitAll()
 						// allow loading of static resources
 						.requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
 				)
 				/* Login configuration */
-				.formLogin((login) -> login.loginPage("/login").defaultSuccessUrl("/posts"))
+				.formLogin((login) -> login.loginPage("/login").defaultSuccessUrl("/ads"))
 				/* Logout configuration */
 				.logout((logout) -> logout.logoutSuccessUrl("/login"))
 				.httpBasic(withDefaults());
